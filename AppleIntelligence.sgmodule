@@ -1,0 +1,72 @@
+#!name=Apple Intelligence & English Siri
+#!desc=English Siri plus Apple Intelligence, PCC, OHTTP relays, and Photos Clean Up. No MitM. Unlike AppleFlow, Siri is routed through the proxy instead of DIRECT.
+#!author=Tien, based on AppleFlow by Kianuni
+#!homepage=https://github.com/summer87279149/surge-shared-modules
+#!category=Apple
+#!version=1.3.0
+#!arguments=Policy:TW-UrlTest
+#!arguments-desc=Policy: proxy group or fixed node for Apple Intelligence and English Siri. It must support TCP and UDP/QUIC. The default is TW-UrlTest with interval=600 and tolerance=100. If PCC is unstable, switch to one fixed node.
+
+[General]
+# Surge's Fake-IP range can make the Siri daemon connect to 198.18.x.x.
+# These hosts need their real addresses for both proxy and direct connections.
+always-real-ip = %APPEND% guzzoni.apple.com, *.guzzoni.apple.com, *.siri.apple.com, api-siri-prod.apple.com, dejavu.apple.com, sequoia.apple.com, *.smoot.apple.com, *.push.apple.com
+
+[Rule]
+# 1. English Siri
+# AppleFlow sends these domains to DIRECT for Mandarin Siri.
+# English Siri in mainland China needs a supported-region exit, so this module
+# intentionally sends them to Policy instead.
+DOMAIN-SUFFIX,guzzoni.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,siri.apple.com,{{{Policy}}}
+DOMAIN,api-siri-prod.apple.com,{{{Policy}}}
+DOMAIN,dejavu.apple.com,{{{Policy}}}
+DOMAIN,sequoia.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,smoot.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,smoot.apple.cn,{{{Policy}}}
+DOMAIN-WILDCARD,*siri*.apple.com,{{{Policy}}}
+
+# 2. Apple Intelligence region eligibility
+# Keep this exact. Routing all of ls.apple.com would also move Maps and other
+# Location Services traffic away from its normal route.
+DOMAIN,gspe1-ssl.ls.apple.com,{{{Policy}}}
+
+# 3. Private Cloud Compute and Photos High-Quality Clean Up
+# app.apple.com already covers ss-cleanup-proxy-prod.us-east-1m.app.apple.com.
+DOMAIN-SUFFIX,issuer.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,ropes.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,pcc.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,privatecloudcompute.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,process-attribution.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,app.apple.com,{{{Policy}}}
+
+# 4. PCC anonymous tokens and OHTTP gateways
+DOMAIN-SUFFIX,mask-api.icloud.com,{{{Policy}}}
+DOMAIN-SUFFIX,mask.icloud.com,{{{Policy}}}
+DOMAIN-SUFFIX,mask-h2.icloud.com,{{{Policy}}}
+DOMAIN,mask-api.fe.apple-dns.net,{{{Policy}}}
+DOMAIN,mask-api.fe2.apple-dns.net,{{{Policy}}}
+DOMAIN,mask-t.apple-dns.net,{{{Policy}}}
+DOMAIN-SUFFIX,mask.apple-dns.net,{{{Policy}}}
+DOMAIN-SUFFIX,apple-relay.mask.apple-dns.net,{{{Policy}}}
+
+# 5. PCC relays
+DOMAIN-SUFFIX,apple-relay.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,apple-relay.cloudflare.com,{{{Policy}}}
+DOMAIN-SUFFIX,apple-relay.fastly-edge.com,{{{Policy}}}
+DOMAIN-SUFFIX,apple-relay.akamaized.net,{{{Policy}}}
+DOMAIN,apple-carry-relay.cloudflare.com,{{{Policy}}}
+DOMAIN-SUFFIX,apple-ready.fastly-edge.com,{{{Policy}}}
+DOMAIN-SUFFIX,cp4.cloudflare.com,{{{Policy}}}
+
+# 6. Siri ChatGPT and Visual Intelligence
+# These two hosts are easy for large shared rule sets to miss. Pin them here
+# instead of depending on the OpenAI and Google lists below.
+DOMAIN,openai-api.arkoselabs.com,{{{Policy}}}
+DOMAIN,lens.google.com,{{{Policy}}}
+
+# Deliberately omitted from the old inline ruleset:
+# - gsa.apple.com: Apple account services, not Apple Intelligence.
+# - apps.mzstatic.com: App Store assets, not Apple Intelligence.
+# - wps.apple.com and all of ls.apple.com: location-related services with a
+#   wider impact than the eligibility endpoint above.

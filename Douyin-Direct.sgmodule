@@ -1,0 +1,33 @@
+#!name=抖音 / 字节跳动直连
+#!desc=将抖音、豆包、西瓜视频、今日头条等字节跳动域名固定为 DIRECT，不跟随 DouYin 策略组。
+#!author=Tien
+#!homepage=https://github.com/summer87279149/surge-shared-modules
+#!category=Direct
+#!version=1.1.0
+
+[Rule]
+# 豆包
+DOMAIN-KEYWORD,doubao,DIRECT
+
+# 字节跳动、抖音、西瓜视频
+DOMAIN-SUFFIX,bytedance.com,DIRECT
+DOMAIN-SUFFIX,douyin.com,DIRECT
+DOMAIN-SUFFIX,douyincdn.com,DIRECT
+DOMAIN-SUFFIX,douyinvod.com,DIRECT
+DOMAIN-SUFFIX,douyinpic.com,DIRECT
+DOMAIN-SUFFIX,douyinstatic.com,DIRECT
+DOMAIN-SUFFIX,idouyinvod.com,DIRECT
+DOMAIN-SUFFIX,ixiguavideo.com,DIRECT
+DOMAIN-SUFFIX,toutiao.com,DIRECT
+DOMAIN-SUFFIX,byteimg.com,DIRECT
+DOMAIN-SUFFIX,pstatp.com,DIRECT
+DOMAIN-SUFFIX,snssdk.com,DIRECT
+DOMAIN-SUFFIX,amemv.com,DIRECT
+DOMAIN-SUFFIX,ixigua.com,DIRECT
+DOMAIN-SUFFIX,vmdoc.com,DIRECT
+DOMAIN-SUFFIX,volccdn.com,DIRECT
+DOMAIN-SUFFIX,zijieapi.com,DIRECT
+
+# blackmatrix7 DouYin.list 中的精确主机
+DOMAIN,lf3-static.bytednsdoc.com,DIRECT
+DOMAIN,v5-dy-o-abtest.zjcdn.com,DIRECT
