@@ -3,7 +3,7 @@
 #!author=Tien
 #!homepage=https://github.com/summer87279149/surge-shared-modules
 #!category=Direct
-#!version=1.1.0
+#!version=1.1.1
 
 [Rule]
 # 豆包
@@ -18,7 +18,8 @@ DOMAIN-SUFFIX,douyinpic.com,DIRECT
 DOMAIN-SUFFIX,douyinstatic.com,DIRECT
 DOMAIN-SUFFIX,idouyinvod.com,DIRECT
 DOMAIN-SUFFIX,ixiguavideo.com,DIRECT
-DOMAIN-SUFFIX,toutiao.com,DIRECT
+# 今日头条；排除广告域名，避免抢在 AppAdSDK 拒绝规则前面。
+AND,((DOMAIN-SUFFIX,toutiao.com),(NOT,((DOMAIN,ad.toutiao.com))),(NOT,((DOMAIN,adshare.toutiao.com)))),DIRECT
 DOMAIN-SUFFIX,byteimg.com,DIRECT
 DOMAIN-SUFFIX,pstatp.com,DIRECT
 DOMAIN-SUFFIX,snssdk.com,DIRECT
