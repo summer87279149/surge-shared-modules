@@ -1,38 +1,37 @@
 #!name=Apple Intelligence & English Siri
-#!desc=Version 1.3.5. English Siri plus Apple Intelligence, PCC, OHTTP relays, and Photos Clean Up. No MitM. Unlike AppleFlow, Siri is routed through the proxy instead of DIRECT.
+#!desc=Version 1.3.6. English Siri plus Apple Intelligence, PCC, OHTTP relays, and Photos Clean Up. No MitM. Unlike AppleFlow, Siri is routed through the proxy instead of DIRECT.
 #!author=Tien, based on AppleFlow by Kianuni
 #!homepage=https://github.com/summer87279149/surge-shared-modules
 #!category=Apple
-#!version=1.3.5
+#!version=1.3.6
 #!arguments=Policy:TW-UrlTest
 #!arguments-desc=Policy: proxy group or fixed node for Apple Intelligence and English Siri. It must support TCP and UDP/QUIC. The default is TW-UrlTest with interval=600 and tolerance=100. If PCC is unstable, switch to one fixed node.
 
-# Disabled in v1.3.5. It returned real IPs, which allowed a broad Apple
-# IP-CIDR rule to select DIRECT before the Siri hostname rule was evaluated.
-# Keep it here as history and for future experiments. Do not enable it again
-# without checking real iPhone traffic.
-# [General]
-# always-real-ip = %APPEND% guzzoni.apple.com, *.guzzoni.apple.com, *.siri.apple.com, api-siri-prod.apple.com, dejavu.apple.com, sequoia.apple.com, *.smoot.apple.com, *.push.apple.com
+[General]
+# Some Siri components need real, routable IP addresses.
+# The matching domain rules below use extended-matching so Surge can recover
+# the hostname from TLS SNI when the connection targets one of these IPs.
+always-real-ip = %APPEND% guzzoni.apple.com, *.guzzoni.apple.com, *.siri.apple.com, api-siri-prod.apple.com, dejavu.apple.com, sequoia.apple.com, *.smoot.apple.com, *.push.apple.com
 
 [Rule]
-# Apple Intelligence & English Siri v1.3.5
+# Apple Intelligence & English Siri v1.3.6
 #
-# Keep Siri hosts on Surge's Fake-IP path. If they return real IP addresses,
-# a broad IP-CIDR rule such as Apple's 17.0.0.0/8 can select DIRECT before
-# Surge has the hostname needed by the DOMAIN and DOMAIN-SUFFIX rules below.
+# extended-matching lets these domain rules match TLS SNI when the Siri daemon
+# connects to a real IP. Keep it on every rule that serves always-real-ip hosts;
+# otherwise a broad IP-CIDR rule may select DIRECT before the hostname matches.
 #
 # 1. English Siri
 # AppleFlow sends these domains to DIRECT for Mandarin Siri.
 # English Siri in mainland China needs a supported-region exit, so this module
 # intentionally sends them to Policy instead.
-DOMAIN-SUFFIX,guzzoni.apple.com,{{{Policy}}}
-DOMAIN-SUFFIX,siri.apple.com,{{{Policy}}}
-DOMAIN,api-siri-prod.apple.com,{{{Policy}}}
-DOMAIN,dejavu.apple.com,{{{Policy}}}
-DOMAIN,sequoia.apple.com,{{{Policy}}}
-DOMAIN-SUFFIX,smoot.apple.com,{{{Policy}}}
-DOMAIN-SUFFIX,smoot.apple.cn,{{{Policy}}}
-DOMAIN-WILDCARD,*siri*.apple.com,{{{Policy}}}
+DOMAIN-SUFFIX,guzzoni.apple.com,{{{Policy}}},extended-matching
+DOMAIN-SUFFIX,siri.apple.com,{{{Policy}}},extended-matching
+DOMAIN,api-siri-prod.apple.com,{{{Policy}}},extended-matching
+DOMAIN,dejavu.apple.com,{{{Policy}}},extended-matching
+DOMAIN,sequoia.apple.com,{{{Policy}}},extended-matching
+DOMAIN-SUFFIX,smoot.apple.com,{{{Policy}}},extended-matching
+DOMAIN-SUFFIX,smoot.apple.cn,{{{Policy}}},extended-matching
+DOMAIN-WILDCARD,*siri*.apple.com,{{{Policy}}},extended-matching
 
 # 2. Apple Intelligence region eligibility
 # Keep this exact. Routing all of ls.apple.com would also move Maps and other
