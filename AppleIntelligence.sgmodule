@@ -3,7 +3,7 @@
 #!author=Tien, based on AppleFlow by Kianuni
 #!homepage=https://github.com/summer87279149/surge-shared-modules
 #!category=Apple
-#!version=1.3.1
+#!version=1.3.2
 #!arguments=Policy:TW-UrlTest
 #!arguments-desc=Policy: proxy group or fixed node for Apple Intelligence and English Siri. It must support TCP and UDP/QUIC. The default is TW-UrlTest with interval=600 and tolerance=100. If PCC is unstable, switch to one fixed node.
 
@@ -48,6 +48,7 @@ DOMAIN-SUFFIX,mask.icloud.com,{{{Policy}}}
 DOMAIN-SUFFIX,mask-h2.icloud.com,{{{Policy}}}
 DOMAIN,mask-api.fe.apple-dns.net,{{{Policy}}}
 DOMAIN,mask-api.fe2.apple-dns.net,{{{Policy}}}
+DOMAIN,default.fe2.apple-dns.net,{{{Policy}}}
 DOMAIN,mask-t.apple-dns.net,{{{Policy}}}
 DOMAIN-SUFFIX,mask.apple-dns.net,{{{Policy}}}
 DOMAIN-SUFFIX,apple-relay.mask.apple-dns.net,{{{Policy}}}
