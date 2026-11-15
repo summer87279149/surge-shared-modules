@@ -1,9 +1,9 @@
 #!name=Apple Intelligence & English Siri
-#!desc=English Siri plus Apple Intelligence, PCC, OHTTP relays, and Photos Clean Up. No MitM. Unlike AppleFlow, Siri is routed through the proxy instead of DIRECT.
+#!desc=Version 1.3.3. English Siri plus Apple Intelligence, PCC, OHTTP relays, and Photos Clean Up. No MitM. Unlike AppleFlow, Siri is routed through the proxy instead of DIRECT.
 #!author=Tien, based on AppleFlow by Kianuni
 #!homepage=https://github.com/summer87279149/surge-shared-modules
 #!category=Apple
-#!version=1.3.2
+#!version=1.3.3
 #!arguments=Policy:TW-UrlTest
 #!arguments-desc=Policy: proxy group or fixed node for Apple Intelligence and English Siri. It must support TCP and UDP/QUIC. The default is TW-UrlTest with interval=600 and tolerance=100. If PCC is unstable, switch to one fixed node.
 
@@ -13,6 +13,8 @@
 always-real-ip = %APPEND% guzzoni.apple.com, *.guzzoni.apple.com, *.siri.apple.com, api-siri-prod.apple.com, dejavu.apple.com, sequoia.apple.com, *.smoot.apple.com, *.push.apple.com
 
 [Rule]
+# Apple Intelligence & English Siri v1.3.3
+#
 # 1. English Siri
 # AppleFlow sends these domains to DIRECT for Mandarin Siri.
 # English Siri in mainland China needs a supported-region exit, so this module
